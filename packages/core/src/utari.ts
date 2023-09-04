@@ -269,7 +269,7 @@ export class UTARI {
 					email: case_id
 						? `${system_name}+${case_id}@${system_domain}`
 						: this.system_email,
-					name: "UTARI",
+					name: this.config.name ?? "UTARI",
 				},
 				headers: {
 					"In-Reply-To": reply ? this.message_id : undefined,

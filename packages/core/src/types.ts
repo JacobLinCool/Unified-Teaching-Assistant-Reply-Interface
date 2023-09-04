@@ -35,6 +35,7 @@ export type Module = {
 
 export interface UTARIConfig {
 	db: Kysely<Database>;
+	name?: string;
 }
 
 export interface UTARIEnv {
