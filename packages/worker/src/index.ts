@@ -24,7 +24,10 @@ export default {
 	email: async (msg, env, ctx) => {
 		const dialect = new D1Dialect({ database: env.D1 });
 		const db = new Kysely<Database>({ dialect });
-		return new UTARI({ db })
+		return new UTARI({
+			db,
+			name: "師範大學程式設計助教系統 UTARI",
+		})
 			.use(SubjectPreTest)
 			.use(
 				new BasePreTest({
