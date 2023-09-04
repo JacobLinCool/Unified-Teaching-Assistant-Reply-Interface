@@ -14,7 +14,8 @@
 	"scripts": {
 		"dev": "wrangler dev",
 		"wrangler": "wrangler",
-		"deploy": "wrangler deploy"
+		"deploy": "wrangler deploy",
+		"tail": "wrangler tail"
 	},
 	"dependencies": {
 		"@utari/system-message": "workspace:^",

@@ -12,6 +12,8 @@ import {
 	ReplyToCustomer,
 	UTARI,
 } from "utari";
+import { EMAIL_ALLOWLIST } from "./regex";
+import { SubjectPreTest } from "./title";
 
 export interface Env {
 	D1: D1Database;
@@ -23,14 +25,11 @@ export default {
 		const dialect = new D1Dialect({ database: env.D1 });
 		const db = new Kysely<Database>({ dialect });
 		return new UTARI({ db })
+			.use(SubjectPreTest)
 			.use(
 				new BasePreTest({
 					MAX_EMAIL_SIZE: 1_000_000,
-					EMAIL_ALLOWLIST: [
-						/^.*@gapps.ntnu.edu.tw$/,
-						/^.*@ntnu.edu.tw$/,
-						"jacoblincool@gmail.com",
-					],
+					EMAIL_ALLOWLIST,
 				}),
 			)
 			.use(new RandomCaseID())
