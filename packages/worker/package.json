@@ -1,0 +1,42 @@
+{
+	"private": true,
+	"name": "utari-worker",
+	"description": "UTARI is an email-based support system for students to ask questions to teaching assistants.",
+	"version": "0.0.0",
+	"author": "JacobLinCool <jacoblincool@gmail.com> (https://jacoblin.cool)",
+	"license": "MIT",
+	"keywords": [],
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"dev": "wrangler dev",
+		"wrangler": "wrangler",
+		"deploy": "wrangler deploy"
+	},
+	"dependencies": {
+		"@utari/system-message": "workspace:^",
+		"debug": "^4.3.4",
+		"kysely": "^0.26.3",
+		"kysely-d1": "^0.3.0",
+		"utari": "workspace:^"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "latest",
+		"@types/debug": "^4.1.8",
+		"tsup": "^7.2.0",
+		"typedoc": "^0.25.0",
+		"typescript": "^5.2.2",
+		"wrangler": "^3.6.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface.git"
+	},
+	"bugs": {
+		"url": "https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/issues"
+	},
+	"homepage": "https://jacoblincool.github.io/Unified-Teaching-Assistant-Reply-Interface"
+}
