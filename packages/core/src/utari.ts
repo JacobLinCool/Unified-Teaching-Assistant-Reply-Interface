@@ -264,7 +264,7 @@ export class UTARI {
 				"content-type": "application/json",
 			},
 			body: JSON.stringify({
-				personalizations: [{ to: to.map((it) => ({ email: it })) }],
+				personalizations: to.map((it) => ({ to: [{ email: it }] })),
 				from: {
 					email: case_id
 						? `${system_name}+${case_id}@${system_domain}`
@@ -274,7 +274,8 @@ export class UTARI {
 				headers: {
 					"In-Reply-To": reply ? this.message_id : undefined,
 				},
-				subject: this.subject.startsWith("Re:") ? this.subject : `Re: ${this.subject}`,
+				subject:
+					reply && this.subject.startsWith("Re:") ? this.subject : `Re: ${this.subject}`,
 				content: [
 					{
 						type: `text/${format}`,
