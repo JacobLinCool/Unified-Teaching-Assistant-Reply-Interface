@@ -23,7 +23,16 @@ export default {
 		const dialect = new D1Dialect({ database: env.D1 });
 		const db = new Kysely<Database>({ dialect });
 		return new UTARI({ db })
-			.use(new BasePreTest())
+			.use(
+				new BasePreTest({
+					MAX_EMAIL_SIZE: 1_000_000,
+					EMAIL_ALLOWLIST: [
+						/^.*@gapps.ntnu.edu.tw$/,
+						/^.*@ntnu.edu.tw$/,
+						"jacoblincool@gmail.com",
+					],
+				}),
+			)
 			.use(new RandomCaseID())
 			.use(new ParseEmail())
 			.use(new NotifySupport())
