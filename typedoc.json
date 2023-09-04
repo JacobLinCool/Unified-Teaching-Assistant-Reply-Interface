@@ -1,0 +1,6 @@
+{
+	"entryPoints": ["packages/*"],
+	"name": "UTARI",
+	"entryPointStrategy": "packages",
+	"includeVersion": true
+}
