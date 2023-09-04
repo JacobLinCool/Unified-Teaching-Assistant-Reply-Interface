@@ -22,12 +22,15 @@ export class NotifySupport implements Module {
 
 		const addresses = supports.map((support) => support.address);
 
+		const is_html = !!email.html;
+		const brk = is_html ? "<br>" : "\n";
+
 		await this.ctx.send(
 			addresses,
 			`New case ${record.id} from ${email.from.name} <${
 				email.from.address
-			}> arrived.\n\n---\n\n${email.html || email.text}`,
-			email.html ? "html" : "plain",
+			}> arrived.${brk}${brk}---${brk}${brk}${is_html ? email.html : email.text}`,
+			is_html ? "html" : "plain",
 		);
 	};
 
@@ -45,14 +48,17 @@ export class NotifySupport implements Module {
 			throw new Error("Assignee not found");
 		}
 
+		const is_html = !!email.html;
+		const brk = is_html ? "<br>" : "\n";
+
 		await this.ctx.send(
 			[assignee.address],
 			`New case ${record.id} assigned. (from ${email.from.name} <${
 				email.from.address
-			}>)\n\nYou can directly reply this email or use special command with the "order:" prefix.\n\n---\n\n${
-				email.html || email.text
+			}>)${brk}${brk}You can directly reply this email or use special command with the "order:" prefix.${brk}${brk}---${brk}${brk}${
+				is_html ? email.html : email.text
 			}`,
-			email.html ? "html" : "plain",
+			is_html ? "html" : "plain",
 		);
 	};
 
@@ -70,14 +76,17 @@ export class NotifySupport implements Module {
 			return;
 		}
 
+		const is_html = !!email.html;
+		const brk = is_html ? "<br>" : "\n";
+
 		await this.ctx.send(
 			[assignee.address],
 			`Case ${record.id} has been updated. (from ${email.from.name} <${
 				email.from.address
-			}>)\n\nYou can directly reply this email or use special command with the "order:" prefix.\n\n---\n\n${
-				email.html || email.text
+			}>)${brk}${brk}You can directly reply this email or use special command with the "order:" prefix.${brk}${brk}---${brk}${brk}${
+				is_html ? email.html : email.text
 			}`,
-			email.html ? "html" : "plain",
+			is_html ? "html" : "plain",
 		);
 	};
 }
