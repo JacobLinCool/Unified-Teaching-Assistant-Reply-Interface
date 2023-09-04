@@ -5,6 +5,7 @@ export * from "./utari";
 export * from "./utils";
 
 export * from "./module/base-pre-test";
+export * from "./module/no-auto-assign";
 export * from "./module/notify-support";
 export * from "./module/parse-email";
 export * from "./module/random-assign";
