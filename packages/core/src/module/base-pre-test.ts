@@ -31,19 +31,19 @@ export class BasePreTest implements Module {
 		}
 
 		if (this.config.EMAIL_ALLOWLIST) {
-			const string_matches = this.config.EMAIL_ALLOWLIST.filter(
-				(item) => typeof item === "string",
-			) as string[];
-			const regex_matches = this.config.EMAIL_ALLOWLIST.filter(
-				(item) => item instanceof RegExp,
-			) as RegExp[];
-
-			const matched =
-				string_matches.includes(message.from) ||
-				regex_matches.some((regex) => regex.test(message.from));
+			const matched = base_pre_test_regex_test(this.config.EMAIL_ALLOWLIST, message.from);
 			if (!matched) {
 				throw new Error("Email is sent from an unauthorized address");
 			}
 		}
 	};
+}
+
+export function base_pre_test_regex_test(list: (RegExp | string)[], test: string) {
+	const string_matches = list.filter((item) => typeof item === "string") as string[];
+	const regex_matches = list.filter((item) => item instanceof RegExp) as RegExp[];
+
+	const matched =
+		string_matches.includes(test) || regex_matches.some((regex) => regex.test(test));
+	return matched;
 }
