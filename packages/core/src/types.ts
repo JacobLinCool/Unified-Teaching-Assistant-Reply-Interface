@@ -5,7 +5,6 @@ import type { UTARI } from "./utari";
 
 export interface Middleware {
 	"pre-test": (message: ForwardableEmailMessage) => Promise<void>;
-	"parse-email": (message: ForwardableEmailMessage) => Promise<Email>;
 	"gen-case-id": (email: Email) => Promise<string>;
 	"auto-assign": (email: Email) => Promise<string | null>;
 }
@@ -36,6 +35,8 @@ export type Module = {
 export interface UTARIConfig {
 	db: Kysely<Database>;
 	name?: string;
+	sender?: (param: SenderParam) => Promise<void>;
+	parser?: (message: ForwardableEmailMessage) => Promise<Email>;
 }
 
 export interface UTARIEnv {
@@ -58,4 +59,20 @@ export interface ModuleInitialContext {
 	utari: UTARI;
 	send: SendFn;
 	reply: ReplyFn;
+}
+
+export interface SenderParam {
+	sys: {
+		/** The email address of the system. */
+		email: string;
+		/** The name of the system. */
+		name: string;
+	};
+	to: string[];
+	/** The subject of the email. */
+	subject: string;
+	body: string;
+	format: "plain" | "html";
+	/** The email message ID of the email to reply to. */
+	reply?: string;
 }

@@ -7,6 +7,8 @@ import type {
 import debug from "debug";
 import { Kysely } from "kysely";
 import { Case, Database, up } from "./db";
+import { default_parser } from "./parser";
+import { mailchannels_sender } from "./sender";
 import type { Hook, Middleware, Module, UTARIConfig, UTARIEnv } from "./types";
 import { extract_case_id } from "./utils";
 
@@ -14,7 +16,7 @@ export class UTARI {
 	protected log = debug("utari:core");
 	public modules: Module[] = [];
 	public db: Kysely<Database>;
-	public config: UTARIConfig;
+	public config: Required<UTARIConfig>;
 	private system_email = "";
 	private message_id = "";
 	private subject = "";
@@ -24,7 +26,12 @@ export class UTARI {
 
 	constructor(config: UTARIConfig) {
 		this.db = config.db;
-		this.config = config;
+		this.config = {
+			name: "UTARI",
+			sender: mailchannels_sender,
+			parser: default_parser,
+			...config,
+		};
 		this.log.log = console.log.bind(console);
 		this.log.enabled = true;
 	}
@@ -52,7 +59,7 @@ export class UTARI {
 			return;
 		}
 
-		const parsed = await this.run_middleware("parse-email", message);
+		const parsed = await this.config.parser(message);
 		this.log("parsed", parsed);
 		this.message_id = parsed.messageId;
 
@@ -237,60 +244,39 @@ export class UTARI {
 	private async init_modules() {
 		this.log("init");
 
+		const [system_name, system_domain] = this.system_email.split("@");
+
 		const reply = (body: string, format: "plain" | "html" = "plain") =>
-			this._send.bind(this)([this.sender], body, format, true, this.case_id);
+			this.config.sender({
+				to: [this.sender],
+				body,
+				format,
+				sys: {
+					email: this.case_id
+						? `${system_name}+${this.case_id}@${system_domain}`
+						: this.system_email,
+					name: this.config.name,
+				},
+				reply: this.message_id || undefined,
+				subject: this.subject.startsWith("Re:") ? this.subject : `Re: ${this.subject}`,
+			});
 		const send = (to: string[], body: string, format: "plain" | "html" = "plain") =>
-			this._send.bind(this)(to, body, format, false, this.case_id);
+			this.config.sender({
+				to,
+				body,
+				format,
+				sys: {
+					email: this.case_id
+						? `${system_name}+${this.case_id}@${system_domain}`
+						: this.system_email,
+					name: this.config.name,
+				},
+				subject: this.subject,
+			});
 
 		const tasks = this.modules.map((module) => module.init?.({ utari: this, reply, send }));
 		await Promise.all(tasks);
 		this.log("init complete");
-	}
-
-	private async _send(
-		to: string[],
-		body: string,
-		format: "plain" | "html",
-		reply: boolean,
-		case_id?: string,
-	) {
-		this.log("reply", to, body, case_id);
-
-		const [system_name, system_domain] = this.system_email.split("@");
-
-		const req = new Request("https://api.mailchannels.net/tx/v1/send", {
-			method: "POST",
-			headers: {
-				"content-type": "application/json",
-			},
-			body: JSON.stringify({
-				personalizations: to.map((it) => ({ to: [{ email: it }] })),
-				from: {
-					email: case_id
-						? `${system_name}+${case_id}@${system_domain}`
-						: this.system_email,
-					name: this.config.name ?? "UTARI",
-				},
-				headers: {
-					"In-Reply-To": reply ? this.message_id : undefined,
-				},
-				subject:
-					reply && this.subject.startsWith("Re:") ? this.subject : `Re: ${this.subject}`,
-				content: [
-					{
-						type: `text/${format}`,
-						value: body,
-					},
-				],
-			}),
-		});
-
-		const res = await fetch(req);
-		if (!res.ok) {
-			throw new Error(`Failed to send email: ${res.status} ${await res.text()}`);
-		}
-
-		this.log("reply sent");
 	}
 
 	/**

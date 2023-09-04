@@ -7,7 +7,6 @@ import {
 	Database,
 	NoAutoAssign,
 	NotifySupport,
-	ParseEmail,
 	RandomCaseID,
 	ReplyToCustomer,
 	UTARI,
@@ -36,7 +35,6 @@ export default {
 				}),
 			)
 			.use(new RandomCaseID())
-			.use(new ParseEmail())
 			.use(new NotifySupport())
 			.use(new ReplyToCustomer())
 			.use(new NoAutoAssign())

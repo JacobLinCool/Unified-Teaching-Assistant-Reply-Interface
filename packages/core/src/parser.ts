@@ -1,19 +1,14 @@
 import type { Email } from "postal-mime";
 import PostalMime from "postal-mime";
-import type { Module } from "../types";
 
-export class ParseEmail implements Module {
-	name = "parse-email";
+export async function default_parser(message: ForwardableEmailMessage): Promise<Email> {
+	const buffer = await stream2buffer(message.raw, message.rawSize);
 
-	"parse-email" = async (message: ForwardableEmailMessage): Promise<Email> => {
-		const buffer = await stream2buffer(message.raw, message.rawSize);
+	// @ts-expect-error Bad types
+	const parser: PostalMime = new PostalMime.default();
+	const parsed = await parser.parse(buffer);
 
-		// @ts-expect-error Bad types
-		const parser: PostalMime = new PostalMime.default();
-		const parsed = await parser.parse(buffer);
-
-		return parsed;
-	};
+	return parsed;
 }
 
 async function stream2buffer(stream: ReadableStream, size: number): Promise<Uint8Array> {
