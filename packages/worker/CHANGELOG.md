@@ -1,5 +1,13 @@
 # utari-worker
 
+## 0.0.2
+
+### Patch Changes
+
+-   Updated dependencies [[`e2bc713`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/e2bc713f0534b8fe00444aeadce4b94dc7da28a5), [`cd9922a`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/cd9922af9b1c53a00220f255cd6f54ccd36f63d8), [`7b75e34`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/7b75e34387f0626a69985f1123ec2d4b9fe180a9), [`8637ac8`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/8637ac8191189dcba9275124417c161ee68e3c3f), [`f3ac89c`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/f3ac89cfb5f3142d5beca36469c885c9d49e7c21)]:
+    -   utari@0.0.2
+    -   @utari/system-message@0.0.2
+
 ## 0.0.1
 
 ### Patch Changes

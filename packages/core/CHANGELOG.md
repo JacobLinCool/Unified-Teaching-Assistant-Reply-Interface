@@ -1,5 +1,19 @@
 # utari
 
+## 0.0.2
+
+### Patch Changes
+
+-   [`e2bc713`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/e2bc713f0534b8fe00444aeadce4b94dc7da28a5) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Customaize the system name in email
+
+-   [`cd9922a`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/cd9922af9b1c53a00220f255cd6f54ccd36f63d8) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Separate to field of seding email and remove "RE:" in title when send to others
+
+-   [`7b75e34`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/7b75e34387f0626a69985f1123ec2d4b9fe180a9) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Set subject at the begin of handle function
+
+-   [`8637ac8`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/8637ac8191189dcba9275124417c161ee68e3c3f) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - fix the extract case id bug
+
+-   [`f3ac89c`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/f3ac89cfb5f3142d5beca36469c885c9d49e7c21) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Set sender at the begin of handle function
+
 ## 0.0.1
 
 ### Patch Changes
