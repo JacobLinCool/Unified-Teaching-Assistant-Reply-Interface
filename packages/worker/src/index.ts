@@ -5,9 +5,9 @@ import { D1Dialect } from "kysely-d1";
 import {
 	BasePreTest,
 	Database,
+	NoAutoAssign,
 	NotifySupport,
 	ParseEmail,
-	RandomAssign,
 	RandomCaseID,
 	ReplyToCustomer,
 	UTARI,
@@ -28,7 +28,7 @@ export default {
 			.use(new ParseEmail())
 			.use(new NotifySupport())
 			.use(new ReplyToCustomer())
-			.use(new RandomAssign())
+			.use(new NoAutoAssign())
 			.use(
 				new SystemMessage({
 					"on-pre-test-failed": (email, error) =>
