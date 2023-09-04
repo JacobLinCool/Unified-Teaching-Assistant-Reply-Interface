@@ -32,6 +32,7 @@ export class UTARI {
 	private async _handle(message: ForwardableEmailMessage, env: UTARIEnv, ctx: ExecutionContext) {
 		this.system_email = env.SYSTEM_EMAIL;
 		this.ctx = ctx;
+		this.sender = message.from;
 		if (!this.system_email) {
 			throw new Error("SYSTEM_EMAIL is not set");
 		}
@@ -54,7 +55,6 @@ export class UTARI {
 		this.log("parsed", parsed);
 		this.message_id = parsed.messageId;
 		this.subject = parsed.subject || "";
-		this.sender = parsed.from.address;
 
 		let case_id = extract_case_id(parsed.to[0].address);
 		this.case_id = case_id;
