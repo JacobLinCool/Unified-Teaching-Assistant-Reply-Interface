@@ -23,13 +23,15 @@ export class NotifySupport implements Module {
 		const addresses = supports.map((support) => support.address);
 
 		const is_html = !!email.html;
-		const brk = is_html ? "<br>" : "\n";
+		const brk = is_html ? "<br/>" : "\n";
 
 		await this.ctx.send(
 			addresses,
 			`New case ${record.id} from ${email.from.name} <${
 				email.from.address
-			}> arrived.${brk}${brk}---${brk}${brk}${is_html ? email.html : email.text}`,
+			}> arrived. You can directly reply this email or use special command with the "order:" prefix.${brk}${brk}---${brk}${brk}${
+				is_html ? email.html : email.text
+			}`,
 			is_html ? "html" : "plain",
 		);
 	};
@@ -49,7 +51,7 @@ export class NotifySupport implements Module {
 		}
 
 		const is_html = !!email.html;
-		const brk = is_html ? "<br>" : "\n";
+		const brk = is_html ? "<br/>" : "\n";
 
 		await this.ctx.send(
 			[assignee.address],
@@ -77,7 +79,7 @@ export class NotifySupport implements Module {
 		}
 
 		const is_html = !!email.html;
-		const brk = is_html ? "<br>" : "\n";
+		const brk = is_html ? "<br/>" : "\n";
 
 		await this.ctx.send(
 			[assignee.address],
