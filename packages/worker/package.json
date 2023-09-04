@@ -2,7 +2,7 @@
 	"private": true,
 	"name": "utari-worker",
 	"description": "UTARI is an email-based support system for students to ask questions to teaching assistants.",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"author": "JacobLinCool <jacoblincool@gmail.com> (https://jacoblin.cool)",
 	"license": "MIT",
 	"keywords": [],
