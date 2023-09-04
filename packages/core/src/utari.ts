@@ -120,7 +120,7 @@ export class UTARI {
 		} else {
 			let case_record = await this.db
 				.selectFrom("case")
-				.where("id", "=", case_id)
+				.where("case.id", "=", case_id)
 				.leftJoin("support", "case.assignee_id", "support.id")
 				.select([
 					"case.id",
