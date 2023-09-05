@@ -71,6 +71,29 @@ export class OpenAIAssistant extends NotifySupport {
 		);
 	};
 
+	"on-customer-reply" = async (email: ParsedEmail, record: Case) => {
+		if (!this.ctx) {
+			return;
+		}
+
+		const assignee = await this.ctx.utari.db
+			.selectFrom("support")
+			.select(["support.address"])
+			.where("support.id", "=", record.assignee_id)
+			.executeTakeFirst();
+		if (!assignee) {
+			return;
+		}
+
+		const is_html = !!email.html;
+
+		await this.ctx.send(
+			[assignee.address],
+			await this.generate(email, record),
+			is_html ? "html" : "plain",
+		);
+	};
+
 	protected async generate(email: ParsedEmail, record: Case) {
 		const openai = new OpenAI({ apiKey: this.config.api_key });
 
