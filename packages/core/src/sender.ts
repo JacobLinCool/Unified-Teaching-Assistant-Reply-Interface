@@ -28,18 +28,23 @@ export async function mailchannels_sender(param: SenderParam): Promise<void> {
 		],
 	};
 
-	const req = new Request("https://api.mailchannels.net/tx/v1/send", {
-		method: "POST",
-		headers: {
-			"content-type": "application/json",
-		},
-		body: JSON.stringify(payload),
-	});
+	let retry = 0;
+	while (retry < 2) {
+		retry++;
+		const req = new Request("https://api.mailchannels.net/tx/v1/send", {
+			method: "POST",
+			headers: {
+				"content-type": "application/json",
+			},
+			body: JSON.stringify(payload),
+		});
 
-	const res = await fetch(req);
-	if (!res.ok) {
-		throw new Error(`Failed to send email: ${res.status} ${await res.text()}`);
+		const res = await fetch(req);
+		if (!res.ok) {
+			throw new Error(`Failed to send email: ${res.status} ${await res.text()}`);
+		}
+
+		log("send complete");
+		break;
 	}
-
-	log("send complete");
 }
