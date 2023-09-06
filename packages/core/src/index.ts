@@ -12,6 +12,7 @@ export * from "./module/notify-support";
 export * from "./module/random-assign";
 export * from "./module/random-case-id";
 export * from "./module/reply-to-customer";
+export * from "./module/store-raw-r2";
 
 export type { ForwardableEmailMessage } from "@cloudflare/workers-types";
 export type { Email as ParsedEmail } from "postal-mime";

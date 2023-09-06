@@ -10,6 +10,7 @@ export interface Middleware {
 }
 
 export interface Hook {
+	"on-recieved": (message: ForwardableEmailMessage, buffer: ArrayBuffer) => Promise<void>;
 	"on-pre-test-failed": (message: ForwardableEmailMessage, error: Error) => Promise<void>;
 	"on-pre-test-passed": (message: ForwardableEmailMessage) => Promise<void>;
 	"on-existing-case": (email: Email, record: Case) => Promise<void>;
@@ -36,7 +37,7 @@ export interface UTARIConfig {
 	db: Kysely<Database>;
 	name?: string;
 	sender?: (param: SenderParam) => Promise<void>;
-	parser?: (message: ForwardableEmailMessage) => Promise<Email>;
+	parser?: (message: ArrayBuffer) => Promise<Email>;
 }
 
 export interface UTARIEnv {

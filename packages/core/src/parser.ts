@@ -1,9 +1,7 @@
 import type { Email } from "postal-mime";
 import PostalMime from "postal-mime";
 
-export async function default_parser(message: ForwardableEmailMessage): Promise<Email> {
-	const buffer = await stream2buffer(message.raw, message.rawSize);
-
+export async function default_parser(buffer: ArrayBuffer): Promise<Email> {
 	// @ts-expect-error Bad types
 	const parser: PostalMime = new PostalMime.default();
 	const parsed = await parser.parse(buffer);

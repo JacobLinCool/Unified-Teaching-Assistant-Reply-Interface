@@ -10,7 +10,7 @@ import { Case, Database, up } from "./db";
 import { default_parser } from "./parser";
 import { mailchannels_sender } from "./sender";
 import type { Hook, Middleware, Module, UTARIConfig, UTARIEnv } from "./types";
-import { extract_case_id } from "./utils";
+import { extract_case_id, stream2buffer } from "./utils";
 
 export class UTARI {
 	protected log = debug("utari:core");
@@ -49,6 +49,10 @@ export class UTARI {
 
 		await this.init_modules();
 
+		const buffer = await stream2buffer(message.raw, message.rawSize);
+
+		this.run_hooks("on-recieved", message, buffer);
+
 		try {
 			await this.run_middlewares("pre-test", message);
 			this.run_hooks("on-pre-test-passed", message);
@@ -59,7 +63,7 @@ export class UTARI {
 			return;
 		}
 
-		const parsed = await this.config.parser(message);
+		const parsed = await this.config.parser(buffer);
 		this.log("parsed", parsed);
 		this.message_id = parsed.messageId;
 

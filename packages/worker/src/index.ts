@@ -3,7 +3,15 @@ import { OpenAIAssistant } from "@utari/openai-assistant";
 import { SystemMessage } from "@utari/system-message";
 import { Kysely } from "kysely";
 import { D1Dialect } from "kysely-d1";
-import { BasePreTest, Database, NoAutoAssign, RandomCaseID, ReplyToCustomer, UTARI } from "utari";
+import {
+	BasePreTest,
+	Database,
+	NoAutoAssign,
+	RandomCaseID,
+	ReplyToCustomer,
+	StoreRawR2,
+	UTARI,
+} from "utari";
 import { EMAIL_ALLOWLIST } from "./regex";
 import { SubjectPreTest } from "./title";
 
@@ -11,6 +19,7 @@ export interface Env {
 	D1: D1Database;
 	SYSTEM_EMAIL: string;
 	OPENAI_API_KEY: string;
+	R2: R2Bucket;
 }
 
 export default {
@@ -28,11 +37,12 @@ export default {
 					EMAIL_ALLOWLIST,
 				}),
 			)
+			.use(new StoreRawR2({ R2: env.R2 }))
 			.use(new RandomCaseID())
 			.use(
 				new OpenAIAssistant({
 					api_key: env.OPENAI_API_KEY,
-					model: "gpt-3.5-turbo",
+					model: "gpt-4",
 					message: (email, record) =>
 						email.text
 							? [
@@ -49,10 +59,13 @@ export default {
 									},
 									{
 										role: "user",
-										content: email.text,
+										content: email.text.slice(0, 3000),
 									},
 							  ]
 							: [],
+					override: {
+						max_tokens: 1500,
+					},
 				}),
 			)
 			.use(new ReplyToCustomer())

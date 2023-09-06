@@ -17,6 +17,17 @@ export class SystemMessage implements Module {
 		this.ctx = ctx;
 	}
 
+	public async "on-recieved"(email: ForwardableEmailMessage): Promise<void> {
+		if (!this.ctx) {
+			return;
+		}
+
+		const message = this.config["on-recieved"]?.(email);
+		if (message) {
+			await this.ctx.reply(message);
+		}
+	}
+
 	public async "on-pre-test-failed"(email: ForwardableEmailMessage, error: Error): Promise<void> {
 		if (!this.ctx) {
 			return;
