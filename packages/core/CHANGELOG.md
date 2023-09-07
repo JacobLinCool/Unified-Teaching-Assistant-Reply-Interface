@@ -1,5 +1,23 @@
 # utari
 
+## 0.1.0
+
+### Minor Changes
+
+-   [`da99b26`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/da99b26829b7c1f3879b51b1b6de2a50e5555719) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Add parser and sender to UTARI config
+
+    Since parser and sender are the backbone of the UTARI, they should not be implemented as a middleware. Now, people can use their own parser and sender by setting the config, if not set, the default parser (portal-mime) and sender (mailchannels) will be used.
+
+-   [`da99b26`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/da99b26829b7c1f3879b51b1b6de2a50e5555719) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Remove email-parser middleware, use config.parser to set other parser instead
+
+### Patch Changes
+
+-   [`07003a2`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/07003a278bb50a9b3b0e363ec0bf452d15772318) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Add retry for default email sender
+
+-   [`b533d1a`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/b533d1abe1379b62b2cc5108c30b8e91a65288f7) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Add on-recieved hook
+
+-   [`b533d1a`](https://github.com/JacobLinCool/Unified-Teaching-Assistant-Reply-Interface/commit/b533d1abe1379b62b2cc5108c30b8e91a65288f7) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Add store to R2 module
+
 ## 0.0.2
 
 ### Patch Changes
