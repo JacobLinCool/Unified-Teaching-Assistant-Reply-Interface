@@ -1,5 +1,5 @@
 import debug from "debug";
-import OpenAI from "openai";
+import type { OpenAI } from "openai";
 import { Case, NotifySupport, ParsedEmail } from "utari";
 
 export interface OpenAIAssistantConfig {
@@ -95,25 +95,31 @@ export class OpenAIAssistant extends NotifySupport {
 	};
 
 	protected async generate(email: ParsedEmail, record: Case) {
-		const openai = new OpenAI({ apiKey: this.config.api_key });
-
 		const payload = {
 			model: this.config.model,
 			messages: (this.config.message ?? this.default_message)(email, record),
 			max_tokens: 1000,
 			...this.config.override,
 		};
-		this.log("Payload: %O", payload);
+		this.log("Payload:", payload);
 
-		const res = await openai.chat.completions.create(payload);
-		this.log("Response: %O", res);
+		const res = await fetch("https://api.openai.com/v1/chat/completions", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${this.config.api_key}`,
+			},
+			body: JSON.stringify(payload),
+		});
+		const json = await res.json<OpenAI.Chat.Completions.ChatCompletion>();
+		this.log("Response:", json);
 
 		const is_html = !!email.html;
 		const brk = is_html ? "<br/>" : "\n";
 
 		const draft = is_html
-			? res.choices[0].message.content?.replace(/\n/g, "<br/>")
-			: res.choices[0].message.content;
+			? json.choices[0].message.content?.replace(/\n/g, "<br/>")
+			: json.choices[0].message.content;
 
 		return `New case ${record.id} assigned. (from ${email.from.name} <${
 			email.from.address

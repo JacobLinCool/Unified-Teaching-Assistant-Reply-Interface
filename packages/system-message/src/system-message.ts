@@ -17,12 +17,12 @@ export class SystemMessage implements Module {
 		this.ctx = ctx;
 	}
 
-	public async "on-recieved"(email: ForwardableEmailMessage): Promise<void> {
+	public async "on-recieved"(email: ForwardableEmailMessage, buffer: ArrayBuffer): Promise<void> {
 		if (!this.ctx) {
 			return;
 		}
 
-		const message = this.config["on-recieved"]?.(email);
+		const message = this.config["on-recieved"]?.(email, buffer);
 		if (message) {
 			await this.ctx.reply(message);
 		}
